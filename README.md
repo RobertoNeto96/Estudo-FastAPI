@@ -10,4 +10,5 @@ Após consolidar os fundamentos em Python e banco de dados MySQL, o foco deste p
 * **Integração:** Conexão com banco de dados e estruturação de operações CRUD.
 
 ---
-*Aberto a sugestões, code reviews e feedbacks!*
+
+
