@@ -11,4 +11,15 @@ Após consolidar os fundamentos em Python e banco de dados MySQL, o foco deste p
 
 ---
 
+. temos as requisiçoes:
+
+Get --> Leitura
+Post --> enviar/Criar
+Put/Patch --> Edição
+Delete --> Deletar
+
+. Uma observação muito importante é que uma ROTA ou caminho, é tudo que vem depois do DOMINIO do link do site
+
+. Uma boa pratica de codificação, é criar as rotas em arquivos diferentes, cada rota em seu arquivo diferente, levando em isso em conta, no arquivo MAIN a ordem de importação desses 
+
 
