@@ -60,3 +60,68 @@ app = FastAPI()
 from auth_routes import auth_router from order_routes import order_router
 
 app.include_router(auth_router) app.include_router(order_router)
+
+---------------------------------------------------------------------------------------------------------
+
+INTEGRAÇÃO DE COMANDOS COM BANCO DE DADOS
+
+. Uma boa pratica na programação é criar um aquivo separado com nome de MODELS.PY para definirmos os comandos de classes do banco de dados 
+
+. Para as importações serão SQLALCHEMY com seu modulo CREATE_ENGINE, que é o modulo que permite a criação de um banco de dados
+
+. Criamos um banco de dados novo atribuindo um comando a uma variavel, nesse caso utilizaremos DB = CREATE_ENGINE() dentro dos parenteses temos paramentros para incluir, sendo primeiro o prefixo     "sqlite:///    e o nome do banco que sera criado .(ponto) db:                            db = create_engine("sqlite:///banco.db)         
+
+. Após criarmos o banco de dados, precisamos criar a BASE do banco de dados, para isso: importamos primeiramente um modulo do SQLALCHEMY.ORM chamado DECLARATIVE_BASE, depois criamos uma variavel e armazenamos a linha de codigo: DECLARATIVE_BASE() dentro da variavel criada, segue o exemplo da estrutra abaixo: 
+
+from sqlachemy import create_engine
+from sqlalchemy.orm import declarative_base
+
+db = create_engine("sqlite:///banco.db") --> nessa linha de codigo criamos a "forma" para criarmos de fato o banco de dados posteriormente
+base = declarative_base() --> aqui criamos a base do banco de dados, para efeito de um entendimento melhor, esse comando é como um tradutor, que conhece comandos em SQL e comandos em PYTHON
+
+. Após termos definidos a criação do banco de dados acima, vamos criar uma CLASSE com as tabelas que farão parte do banco de dados, e respectivamente as colunas de cada tabela, para isso utilizamos CLASS (nome da tabela que sera criado) (base(variavel definida nos exemplos acima)):
+
+class usuario(base):
+    __tablename__ = "usuarios"
+    id = 
+    nome =
+    email = 
+    senha =
+
+. A estrutura acima é composta por algumas linhas, sendo elas, a primeira onde definimos a classe no python com o nome de usuarios e logo em seguida chamamos o variavel/"tradutor" BASE, com o codigo que faz o python e o sql conversarem entre si
+
+. Na segunda linha temos um comando que faz com que a tabela seja criada exatamente com o nome que esta entre as aspas, logo apos o sinal de atribuição, ou seja a tabela criada tera o nome de USUARIOS
+
+. E nas respectivas linhas ID , NOME, EMAIL, serao as colunas que serao criadas dentro da tabela USUARIOS
+
+. Agora para defirnimos os valores de cada coluna que sera criada, precisamos IMPORTAR no arquivo os tipos primitivos do banco de dados, sendo eles BOOLEANOS, INTEIROS, FLUTUANTES, TEXTOS e outros, para isso importamos column, segue o exemplo da estrutura do codigo:
+
+from sqlalchemy import create_engine, column, String, Integer, Boolean, Float, ForeignKey
+from sqlalchemy.orm import declarative_base
+
+. Explicando os valores importados: 
+ String = TEXTO
+ Integer = NUMEROS INTEIROS
+ Boolean = VALORES VERDADEIROS OU FALSOS
+ Float = NUMEROS COM VIRGULA/PONTO
+ ForeignKey = CHAVES PRIMARIAS QUE CONVERSAM ENTRE TABELAS
+
+. Importando esses tipos primitivos, podemos atribuir os valores nas colunas dentro da tabela que foi criada, seguindo um parametro especifico: 
+
+class usuario(base):
+    __tablename__ = "usuarios"
+    id = column("id" , integer , primary_key=True, autoincrement=True)
+    nome = column("nome" , String , nullable=False)
+    email = column("email" , String ,)
+    senha = column("senha" , Integer , nullable=False)
+
+. Explicando o bloco de codigo acima, após definimros o nome da VARIAVEL que sera chamada no PYTHON, nos definimos o nome da COLUNA que sera DENTRO DO BANCO DE DADOS, como boas praticas da programação, utilizamos os mesmos nomes em ambos lugares, PYTHON e BANCO DE DADOS, sempre utilizando aspas duplas para definir o nome da coluna que sera criada, apos definirmos o nome, colocamos o tipo primitivo que essa coluna terá, seja tipo booleano, numero inteiro ou com virgula.
+
+               id                    =        column                                    ("id"                   ,     Integer)
+(nome da variavel dentro do python)    (modulo que foi importado)   (nome que a coluna dentro do banco receberá)  (tipo primitivo)
+
+. Além dos tipos primitivos temos mais alguns parametros que ajudam a criar regras em colunas especificas, como é o caso do NULLABLE, ele faz com que o campo que ele faz parte seja obrigatorio ter a informação que é pedido, como nome, senha, ou E-mail, assim como é utilizado no exemplo acima, no caso o usuario só sera cadastrado se ele colcoar a informação pedida nos 3 campos, NOME e SENHA
+
+. Assim como na criação de tabelas direto no Banco de dados, temos as regras de autoincrement, que o proprio codigo integra em sequencia um numero ao usuario cadastrado, e temos PRIMARY_KEY que é onde ocorre a incrementação de uma chave primaria ao id do usuario, onde posteriormente faremos a foreignKey para ligaçoes entre tabelas
+
+. Temos tambem a regra DEFAULT, que é o mesmo estudado em banco de dados, sempre que o usuario nao inserir nenhum ainformação em algum campo, o sistema automaticamente preenche com alguma informação pre definida, exemplo: nacionalidade = column("nacionalidade" , default='Brasil') --> nesse exemplo quando o usuario nao inserir nenhuma informação no campo nacionalidade, autoamaticamente o sistema preenche com 'Brasil'
