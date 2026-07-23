@@ -125,3 +125,28 @@ class usuario(base):
 . Assim como na criação de tabelas direto no Banco de dados, temos as regras de autoincrement, que o proprio codigo integra em sequencia um numero ao usuario cadastrado, e temos PRIMARY_KEY que é onde ocorre a incrementação de uma chave primaria ao id do usuario, onde posteriormente faremos a foreignKey para ligaçoes entre tabelas
 
 . Temos tambem a regra DEFAULT, que é o mesmo estudado em banco de dados, sempre que o usuario nao inserir nenhum ainformação em algum campo, o sistema automaticamente preenche com alguma informação pre definida, exemplo: nacionalidade = column("nacionalidade" , default='Brasil') --> nesse exemplo quando o usuario nao inserir nenhuma informação no campo nacionalidade, autoamaticamente o sistema preenche com 'Brasil'
+
+. Após criarmos toda a estrutura com as colunas definidas com seus tipos primitivos, e suas respectivas regras, utilizamos o INIT que em linguagem mais comum, ele é como um "empacotador" de usuarios cadastrados nessa ocasião, a partir da estrutra do codigo toda montada, vamos explicar sua função:
+
+from sqlalchemy import create_engine , Column, String , Integer , Boolean , Float , ForeignKey 
+from sqlalchemy.orm import declarative_base
+
+
+db = create_engine("sqlite:///banco.db")
+
+base = declarative_base()
+
+class Usuario(base):
+    __tablename__ = "usuarios"
+    id = Column("id" , Integer , primary_key=True, autoincrement=True)
+    nome = Column("nome" , String , nullable=False)
+    email = Column("email" , String ,)
+    senha = Column("senha" , String , nullable=False)
+
+    def __init__(self, nome, email, senha):
+    self.nome = nome
+    self.email = email
+    self.senha = senha
+
+. def__init__(self , nome, email, senha): é a função que "empacotará" o usuario cadastrado em uma unica variavel, como por exemplo 'usuario1', 'usuario2' e assim por diante, sem precisar fazer isso manualmente
+
