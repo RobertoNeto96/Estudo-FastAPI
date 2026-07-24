@@ -148,5 +148,33 @@ class Usuario(base):
     self.email = email
     self.senha = senha
 
-. def__init__(self , nome, email, senha): é a função que "empacotará" o usuario cadastrado em uma unica variavel, como por exemplo 'usuario1', 'usuario2' e assim por diante, sem precisar fazer isso manualmente
+. def__init__(self , nome, email, senha): é a função que "empacotará" o usuario cadastrado em uma unica variavel, como por exemplo 'usuario1', 'usuario2' e assim por diante, sem precisar fazer isso manualmente, lembrando sempre de atribuir cada self com seu valor, como segue no exemplo acima, self.nome , self.email , self.senha
+
+. Após criarmos todas as classes, com as tabelas que farão parte do banco de dados, criamos a linha de codigo onde de fato fará tudo ser criado.
+
+base.metadata.create_all(bind=db)
+
+.O que essa linha de codigo faz é ler todas as classes do Python que herdaram de base (Usuario, Jogo, Compra, Biblioteca) e traduz essas estruturas para comandos SQL nativos, criando as tabelas no banco de dados SQLite de forma automática.
+
+.Desmembramento dos termos:
+
+.base: É a classe principal (declarative_base) que rastreou e "registrou" todas as tabelas que você declarou no código.
+
+.metadata: É o catálogo interno do SQLAlchemy. Ele guarda o mapa de todas as tabelas, colunas, tipos de dados e chaves estrangeiras que você definiu.
+
+.create_all(...): O método que manda o SQLAlchemy rodar o comando CREATE TABLE IF NOT EXISTS para cada modelo registrado no catálogo.
+
+.bind=db: Conecta a ordem de criação com a sua engine (db = create_engine(...)), informando em qual arquivo de banco de dados (ex: banco.db) e em qual SGBD (SQLite, Postgres, MySQL) as tabelas devem ser construídas.
+
+O create_all só cria tabelas que ainda não existem. Se você já tiver o arquivo banco.db criado e alterar uma coluna no código depois, o create_all não vai modificar a tabela existente (por isso que ferramentas de migração como o Alembic existem para projetos avançados).
+
+. E para finalizar e rodarmos todo o script criado no arquivo MODELS, executamos o comando PYTHON MODELS.PY direto no terminal
+
+----------------------------------------------------------------------------------------------------------
+
+CRIAÇÃO DE USUARIOS
+
+. Partindo agora para uma criação de rota, onde vamos fazer a seção de criação de usuarios
+
+. No arquivo de autenticação --> auth_routes.py --> Vamos 
 

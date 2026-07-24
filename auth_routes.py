@@ -6,3 +6,6 @@ auth_router = APIRouter(prefix="/auth" , tags=["auth"])
 async def Autenticação():
     """Essa função é destinada para rota de autenticação"""
     return {"mensagem:" "Voce acessou a rota padrao de Autenticação"}
+
+@auth_router.post("/criar_conta")
+async def criar_conta(email , senha)    
