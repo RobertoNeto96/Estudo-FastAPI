@@ -174,7 +174,31 @@ O create_all só cria tabelas que ainda não existem. Se você já tiver o arqui
 
 CRIAÇÃO DE USUARIOS
 
-. Partindo agora para uma criação de rota, onde vamos fazer a seção de criação de usuarios
+. Partindo agora para uma criação de rota, onde vamos fazer a seção de criação de usuarios ou cadastro de novas contas
 
-. No arquivo de autenticação --> auth_routes.py --> Vamos 
+. No arquivo de autenticação --> auth_routes.py --> Vamos definir um decorator com uma solicitação do tipo POST, com o final do endereço da rota da forma que melhor achar
+
+. Após isso criamos uma função onde vamos definir o escript para a criação de um novo usuario ou conta, lembrando que para criação de conta geralmente é pedido email e senha, e pra isso definimos um tipo primitivo especifico para o preenchimento dessas informações, como STRING para senha e email, segue o exemplo da estrutura do bloco de codigos:
+
+@auth_router.post("/criar_conta")
+async def criar_conta(email: str , senha: str):
+
+. Após isso, precisamos fazer uma verificação no banco de dados se o usuario que esta sendo cadastrado, ja nao possue um email no banco de dados, para isso importamos a tabela usuarios do arquivo models e tambem o banco de dados criado:
+
+from models import usuario, db
+
+. Depois precisamos criar uma sessao com o banco de dados para podermos buscar informações que ja estao no banco de dados, editar, ou ate mesmo apagar, para isso importamos sessionmaker do sqlalchemy.orm:
+
+from sqlalchemy.orm import sessionmaker
+
+. E após isso criamos uma instancia dentro da função que esta sendo feito o codigo de verificação de criação de usuario, nesse caso a função CRIAR_CONTA, criamos a conexão com o banco de dados atraves do session = sessionmaker(bind=db) --> aqui dentro dos parenteses eu coloco o nome do meu banco de dados criado no arquivo models
+
+@auth.router.post("/criar_conta) --> decorator que da novas funçoes para a função criar_conta
+async def criar_conta(senha: str , email: str) --> campos necessarios para criar um novo usuario, definindo o tipo primitivo de cada um
+    session = sessionmaker(bind=db) --> conexão sendo criada com o banco de dados 
+    session = session.query(usuario).filter(usuario.email==email).first()
+    if usuario:
+
+    else:
+        novo_usuario = usuario()
 

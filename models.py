@@ -11,7 +11,7 @@ class Usuario(base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String, nullable=False)
-    email = Column(String)
+    email = Column(String, unique=True)
     senha = Column(String, nullable=False)
 
 
